@@ -30,7 +30,7 @@ const Auth: NextPage<
                 return (
                   <Button
                     key={provider.id}
-                    onPress={() => authMutation.mutate(provider.id)}
+                    onClick={() => authMutation.mutate(provider.id)}
                     icon={BsDiscord}
                     iconPosition="left"
                   >

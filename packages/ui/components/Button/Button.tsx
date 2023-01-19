@@ -1,20 +1,19 @@
-import React, { useRef, forwardRef } from "react";
+import React, { forwardRef } from "react";
 import { cva, VariantProps } from "class-variance-authority";
-import { useButton, FocusRing } from "react-aria";
-import type { PressEvent } from "@react-types/shared";
+import { FocusRing } from "react-aria";
 import ButtonLoadingIndicator from "./ButtonLoadingIndicator";
 import type { IconType } from "react-icons/lib";
+import { createPolymorphicComponent } from "../../utils/create-polymorphic-component";
 
 const buttonCva = cva(
-  "flex items-center justify-center rounded font-medium outline-none select-none gap-x-2",
+  "inline-flex items-center justify-center rounded font-medium outline-none select-none gap-x-2",
   {
     variants: {
       variant: {
-        primary: "bg-blue-400 enabled:hover:bg-blue-500",
-        secondary: "bg-blue-200 enabled:hover:bg-blue-300",
-        destructive: "bg-red-400 enabled:hover:bg-red-500",
-        transparent:
-          "bg-transparent enabled:hover:text-blue-500 dark:text-white",
+        primary: "bg-blue-400 hover:bg-blue-500",
+        secondary: "bg-blue-200 hover:bg-blue-300",
+        destructive: "bg-red-400 hover:bg-red-500",
+        transparent: "bg-transparent hover:text-blue-500 dark:text-white",
       },
       size: {
         sm: "text-sm px-2 py-2",
@@ -85,96 +84,94 @@ export interface IButton
   isLoading?: boolean;
   loadingPosition?: "right" | "left";
   ref?: React.ForwardedRef<HTMLButtonElement>;
-  onPress?: (e: PressEvent) => void;
 }
 
-const Button = forwardRef<HTMLButtonElement, IButton>((props, forwardedRef) => {
-  const {
-    children,
-    variant,
-    size,
-    fullWidth,
-    isDisabled,
-    className = "",
-    isLoading,
-    loadingPosition = "left",
-    icon,
-    iconPosition = "left",
-    isRounded,
-    isAspectSquare,
-  } = props;
+const _Button = forwardRef<HTMLButtonElement, IButton & { component: any }>(
+  (props, ref) => {
+    const {
+      children,
+      variant,
+      size,
+      fullWidth,
+      isDisabled,
+      className = "",
+      isLoading,
+      loadingPosition = "left",
+      icon,
+      iconPosition = "left",
+      isRounded,
+      isAspectSquare,
+      component,
+      ...restProps
+    } = props;
 
-  const _ref = useRef<HTMLButtonElement>(null);
-  const ref = forwardedRef || _ref;
+    const iconClassName = iconCva({ size });
 
-  const { buttonProps } = useButton(
-    props as any,
-    ref as React.RefObject<HTMLButtonElement>,
-  );
+    const renderLoadingIndicator = () => {
+      let loadingIndicatorSize;
 
-  const iconClassName = iconCva({ size });
+      switch (size) {
+        case "sm":
+          loadingIndicatorSize = 20;
+          break;
+        case "md":
+          loadingIndicatorSize = 24;
+          break;
+        case "lg":
+          loadingIndicatorSize = 28;
+          break;
+        case "xl":
+          loadingIndicatorSize = 32;
+          break;
+        default:
+          break;
+      }
 
-  const renderLoadingIndicator = () => {
-    let loadingIndicatorSize;
+      return (
+        <ButtonLoadingIndicator
+          width={loadingIndicatorSize}
+          height={loadingIndicatorSize}
+          isIndeterminate
+        />
+      );
+    };
 
-    switch (size) {
-      case "sm":
-        loadingIndicatorSize = 20;
-        break;
-      case "md":
-        loadingIndicatorSize = 24;
-        break;
-      case "lg":
-        loadingIndicatorSize = 28;
-        break;
-      case "xl":
-        loadingIndicatorSize = 32;
-        break;
-      default:
-        break;
-    }
+    const Element = component || "button";
 
     return (
-      <ButtonLoadingIndicator
-        width={loadingIndicatorSize}
-        height={loadingIndicatorSize}
-        isIndeterminate
-      />
+      <FocusRing focusRingClass={ringCva({ variant })}>
+        <Element
+          ref={ref}
+          disabled={isDisabled}
+          className={`${className} ${buttonCva({
+            variant,
+            size,
+            fullWidth,
+            isDisabled,
+            isRounded,
+            isAspectSquare: isRounded || isAspectSquare,
+          })}`}
+          {...restProps}
+        >
+          {icon &&
+            iconPosition === "left" &&
+            !isLoading &&
+            icon({ className: iconClassName })}
+
+          {isLoading && loadingPosition === "left" && renderLoadingIndicator()}
+
+          {children && children}
+
+          {icon &&
+            iconPosition === "right" &&
+            !isLoading &&
+            icon({ className: iconClassName })}
+
+          {isLoading && loadingPosition === "right" && renderLoadingIndicator()}
+        </Element>
+      </FocusRing>
     );
-  };
+  },
+);
 
-  return (
-    <FocusRing focusRingClass={ringCva({ variant })}>
-      <button
-        disabled={isDisabled}
-        className={`${className} ${buttonCva({
-          variant,
-          size,
-          fullWidth,
-          isDisabled,
-          isRounded,
-          isAspectSquare: isRounded || isAspectSquare,
-        })}`}
-        {...buttonProps}
-      >
-        {icon &&
-          iconPosition === "left" &&
-          !isLoading &&
-          icon({ className: iconClassName })}
-
-        {isLoading && loadingPosition === "left" && renderLoadingIndicator()}
-
-        {children && children}
-
-        {icon &&
-          iconPosition === "right" &&
-          !isLoading &&
-          icon({ className: iconClassName })}
-
-        {isLoading && loadingPosition === "right" && renderLoadingIndicator()}
-      </button>
-    </FocusRing>
-  );
-});
-
-export default Button;
+export default createPolymorphicComponent<"button", IButton>(_Button);

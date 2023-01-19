@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "../Link";
 import { Button } from "../Button";
+import { BsFillPlayFill } from "react-icons/bs";
 
 const Card = () => {
   return (
@@ -13,9 +14,16 @@ const Card = () => {
         reprehenderit possimus illum earum voluptatem repellat aliquam
         accusantium! Pariatur, consectetur.
       </p>
-      <Link href="http://localhost:3000/auth">
-        <Button variant="destructive">See more</Button>
-      </Link>
+      <span>
+        <Button
+          icon={BsFillPlayFill}
+          component={Link}
+          href={"http://localhost:3000/auth"}
+          variant="destructive"
+        >
+          See more
+        </Button>
+      </span>
     </div>
   );
 };

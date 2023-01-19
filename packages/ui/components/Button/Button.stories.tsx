@@ -1,7 +1,9 @@
+import React from "react";
 import Button from "./Button";
 import { AiFillAndroid, AiFillHome, AiOutlinePlus } from "react-icons/ai";
 import { FiSettings } from "react-icons/fi";
 import { BsFillPlayFill } from "react-icons/bs";
+import { Link } from "../Link";
 
 export const Variants = () => {
   return (
@@ -181,5 +183,21 @@ export const Variants = () => {
         <Button size="xl" icon={AiOutlinePlus} isDisabled isRounded />
       </div>
     </>
+  );
+};
+
+export const CustomRender = () => {
+  return (
+    <div className="mt-10 flex flex-wrap items-center gap-x-4">
+      <Button component={Link} href="https://www.google.com/" external>
+        This is a link
+      </Button>
+      <Button variant="destructive" component="div">
+        This is a div
+      </Button>
+      <Button variant="secondary" component="span">
+        This is a span
+      </Button>
+    </div>
   );
 };

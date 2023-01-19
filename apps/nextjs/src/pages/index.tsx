@@ -17,14 +17,9 @@ const Home = () => {
           <Card />
         </div>
         <div>
-          <Link
-            href={{
-              pathname: "/about",
-              query: { name: "test" },
-            }}
-          >
-            <Button>About us</Button>
-          </Link>
+          <Button component={Link} href="/auth">
+            Testo Autho
+          </Button>
         </div>
         <div className="flex min-h-screen w-full flex-col items-center justify-center">
           <h1 className="text-4xl font-bold">my-t3-boilerplate</h1>

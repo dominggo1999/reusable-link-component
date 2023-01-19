@@ -175,6 +175,7 @@ importers:
       react-aria: ^3.22.0
       react-dom: ^18.2.0
       react-icons: ^4.7.1
+      react-polymorphic-types: ^2.0.0
       react-stately: ^3.20.0
       tailwindcss: ^3.2.4
       typescript: ^4.9.4
@@ -195,6 +196,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-icons: 4.7.1_react@18.2.0
+      react-polymorphic-types: 2.0.0_@types+react@18.0.26
       tailwindcss: 3.2.4_postcss@8.4.21
       typescript: 4.9.4
 
@@ -6321,6 +6323,14 @@ packages:
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  /react-polymorphic-types/2.0.0_@types+react@18.0.26:
+    resolution: {integrity: sha512-Xfz5qfEzLAvB2ijL9hZfHRa9bsQG6te262KHjnbezZ2XyubnSDzh3TV6OgvBsQsz7FCRHjbDbqA5UTkNEziTlw==}
+    peerDependencies:
+      '@types/react': '>=16.8.6'
+    dependencies:
+      '@types/react': 18.0.26
+    dev: true
 
   /react-refresh/0.14.0:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
